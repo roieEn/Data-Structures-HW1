@@ -1,37 +1,37 @@
+#pragma once
 #include <string>
 
 class Tree{
   protected:
   class Block{
-    Block* right;
-    Block* left;
-    int data;
-    public:
-    Block(int data)this.right = null, this.left = null, this.data = data{}
-    ~Block(){ //Do Not Delete A Block Unless Both Children Point To Null
-      this->left = null; this->right = null;
-    }
-    Block* GetRight();
-    void SetRight(Block*);
-    Block* GetLeft();
-    void SetLeft(Block*);
-    int GetData();
-    bool operator >(Block* comp);
+      Block* right;
+      Block* left;
+      int data;
+      public:
+        explicit Block(const int data) : right(nullptr), left(nullptr), data(data) {}
+        ~Block();
+        Block* GetRight() const;
+        void SetRight(Block*);
+        Block* GetLeft() const;
+        void SetLeft(Block*);
+        int GetData() const;
+        bool operator >(const Block* comp) const;
   };
   Block* root;
 
   public:
-  Tree() this.root = null{}
-  ~Tree();
-  int Find(int id);
-  virtual void Add(int data);
-  virtual Remove(int id);
+    Tree();
+    virtual ~Tree();
+    int Find(int id) const;
+    virtual void Add(int data);
+    virtual void Remove(int id);
 
-  //for debug only
-  string GetInOrder();
-  string GetPreOrder();
+    //for debug only
+    std::string GetInOrder();
+
+    std::string GetPreOrder();
 
   protected:
-  void DeleteBlock(Block* curr) noexcept;
-  static Block* CreateBlock(int data);
+    static void DeleteBlock(const Block* curr);
+    static Block* CreateBlock(int data);
 };

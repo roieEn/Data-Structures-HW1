@@ -1,12 +1,19 @@
-#include<stdexept>
-using Tree.h;
+#include <stdexcept>
+#include "Tree.h"
 
-Block* Tree::Block::GetRight(){
+Tree::Block::~Block() { //Do Not Delete A Block Unless Both Children Point To Null
+    // this->left = nullptr; this->right = nullptr;
+    delete right;
+    delete left;
+}
+
+
+Tree::Block* Tree::Block::GetRight() const {
   return this->right;
 }
 
-Block* Tree::Block::GetLeft(){
-  return this->GetLeft;
+Tree::Block* Tree::Block::GetLeft() const {
+  return this->left;
 }
 
 void Tree::Block::SetRight(Block* right){
@@ -17,32 +24,33 @@ void Tree::Block::SetLeft(Block* left){
   this->left = left;
 }
 
-int Tree::Block::GetData(){
+int Tree::Block::GetData() const {
   return this->data;
 }
 
-bool Tree::Block::operator >(Block* comp){
-  return this->Data > comp.GetData();
+bool Tree::Block::operator >(const Block* comp) const{
+  return this->data > comp->GetData();
 }
 
 Tree::~Tree(){
-  if(this->root == null) return;
+  if(this->root == nullptr) return;
   DeleteBlock(this->root);
 }
 
-void Tree::DeleteBlock(Block* curr){
-  if(curr->GetLeft != null)
-    deleteBlock(curr->GetLeft());
-  if(curr->GetRight != null)
-    deleteBlock(curr->GetRight());
-  ~curr;
+void Tree::DeleteBlock(const Block* curr){
+  // if(curr->GetLeft() != nullptr)
+  //   DeleteBlock(curr->GetLeft());
+  // if(curr->GetRight != nullptr)
+  //   DeleteBlock(curr->GetRight());
+  // ~curr;
+  delete curr;
 }
 
-int Tree::Find(int id){
-  Block* curr = this->root
+int Tree::Find(const int id) const {
+  const Block* curr = this->root;
   while(true){
-    if(curr == null)
-      throw(std::invalidargument('no such id in tree'));
+    if(curr == nullptr)
+      throw(std::invalid_argument("no such id in tree"));
     if(curr->GetData() > id){
       curr = curr->GetLeft();
       continue;
@@ -55,17 +63,17 @@ int Tree::Find(int id){
   }
 }
 
-void Tree::Add(int data){
-  if(this->root == null){
+void Tree::Add(const int data){
+  if(this->root == nullptr){
     this->root = CreateBlock(data);
     return;
   }
   Block* curr = root;
   while(true){
     if(curr->GetData() == data)
-     throw(std::invalidargument('id already exists'));
+     throw(std::invalid_argument("id already exists"));
     if(curr->GetData() > data){
-      if(curr->GetLeft() == null){
+      if(curr->GetLeft() == nullptr){
         curr->SetLeft(CreateBlock(data));
         return;
       }
@@ -75,12 +83,12 @@ void Tree::Add(int data){
       }
     }
     else{
-      if(curr->GetRight() == null){
+      if(curr->GetRight() == nullptr){
         curr->SetRight(CreateBlock(data));
         return;
       }
       else{
-        curr = curr.GetRight();
+        curr = curr->GetRight();
         continue;
       }
     }
