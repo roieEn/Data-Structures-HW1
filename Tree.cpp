@@ -46,21 +46,77 @@ void Tree::DeleteBlock(const Block* curr){
   delete curr;
 }
 
-int Tree::Find(const int id) const {
-  const Block* curr = this->root;
+Tree::Block* Tree::Traverse(const int id, Block *root) {
+  Block* curr = root;
+  if(curr == nullptr)//empty tree
+    return root;
   while(true){
-    if(curr == nullptr)
-      throw(std::invalid_argument("no such id in tree"));
+    if(curr->GetData() == id) {//found id
+      return curr;
+    }
     if(curr->GetData() > id){
-      curr = curr->GetLeft();
-      continue;
+      if(curr->GetLeft() != nullptr) {
+        curr = curr->GetLeft();
+        continue;
+      }
+      return curr; //id should be to the left of curr but curr doesn't have a left son
     }
-    if(curr->GetData() < id){
-      curr = curr->GetLeft();
-      continue;
+    else{
+      if(curr->GetRight() != nullptr) {
+        curr = curr->GetRight();
+        continue;
+      }
+      return curr; //id should be to the right of curr but curr doesn't have a right son
     }
-    return curr->GetData();
   }
+}
+
+const Tree::Block* Tree::Traverse(const int id,const Block *root) const {
+  const Block *curr = root;
+  if(curr == nullptr)//empty tree
+    return root;
+  while(true){
+    if(curr->GetData() == id) {
+      return curr;
+    }
+    if(curr->GetData() > id){
+      if(curr->GetLeft() != nullptr) {
+        curr = curr->GetLeft();
+        continue;
+      }
+      return curr; //id should be to the left of curr but curr doesn't have a left son
+    }
+    else{
+      if(curr->GetRight() != nullptr) {
+        curr = curr->GetRight();
+        continue;
+      }
+      return curr; //id should be to the right of curr but curr doesn't have a right son
+    }
+  }
+}
+
+
+int Tree::Find(const int id) const {
+  const Block* found = Traverse(id, this->root);
+  if(found->GetData() == id) { //found it
+    return found->GetData();
+  }
+  throw(std::invalid_argument("no such id in tree")); //found the closest node
+  // const Block* curr = this->root;
+  // while(true){
+  //   if(curr == nullptr)
+  //     throw(std::invalid_argument("no such id in tree"));
+  //   if(curr->GetData() > id){
+  //     curr = curr->GetLeft();
+  //     continue;
+  //   }
+  //   if(curr->GetData() < id){
+  //     curr = curr->GetLeft();
+  //     continue;
+  //   }
+  //   return curr->GetData();
+  // }
 }
 
 void Tree::Add(const int data){
@@ -68,29 +124,39 @@ void Tree::Add(const int data){
     this->root = CreateBlock(data);
     return;
   }
-  Block* curr = root;
-  while(true){
-    if(curr->GetData() == data)
-     throw(std::invalid_argument("id already exists"));
-    if(curr->GetData() > data){
-      if(curr->GetLeft() == nullptr){
-        curr->SetLeft(CreateBlock(data));
-        return;
-      }
-      else{
-        curr = curr->GetLeft();
-        continue;
-      }
-    }
-    else{
-      if(curr->GetRight() == nullptr){
-        curr->SetRight(CreateBlock(data));
-        return;
-      }
-      else{
-        curr = curr->GetRight();
-        continue;
-      }
-    }
+  Block* found = Traverse(data, this->root);
+  if(found->GetData() == data) { //found the data block
+    throw(std::invalid_argument("id already exists"));
   }
+  if(data < found->GetData()) {//need to add it as a left son because it is smaller
+    found->SetLeft(CreateBlock(data));
+  }
+  if(data > found->GetData()) {//need to add it as a right son because it is bigger
+    found->SetRight(CreateBlock(data));
+  }
+
+  // while(true){
+  //   if(curr->GetData() == data)
+  //    throw(std::invalid_argument("id already exists"));
+  //   if(curr->GetData() > data){
+  //     if(curr->GetLeft() == nullptr){
+  //       curr->SetLeft(CreateBlock(data));
+  //       return;
+  //     }
+  //     else{
+  //       curr = curr->GetLeft();
+  //       continue;
+  //     }
+  //   }
+  //   else{
+  //     if(curr->GetRight() == nullptr){
+  //       curr->SetRight(CreateBlock(data));
+  //       return;
+  //     }
+  //     else{
+  //       curr = curr->GetRight();
+  //       continue;
+  //     }
+  //   }
+  // }
 }

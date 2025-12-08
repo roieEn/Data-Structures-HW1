@@ -3,21 +3,24 @@
 
 class Tree{
   protected:
-  class Block{
-      Block* right;
-      Block* left;
-      int data;
-      public:
-        explicit Block(const int data) : right(nullptr), left(nullptr), data(data) {}
-        ~Block();
-        Block* GetRight() const;
-        void SetRight(Block*);
-        Block* GetLeft() const;
-        void SetLeft(Block*);
-        int GetData() const;
-        bool operator >(const Block* comp) const;
-  };
-  Block* root;
+    class Block{
+        Block* right;
+        Block* left;
+        int data;
+        public:
+          explicit Block(const int data) : right(nullptr), left(nullptr), data(data) {}
+          ~Block();
+          Block* GetRight() const;
+          void SetRight(Block*);
+          Block* GetLeft() const;
+          void SetLeft(Block*);
+          int GetData() const;
+          bool operator >(const Block* comp) const;
+    };
+    Block* root;
+    Block* Traverse(int id, Block* root);//searching for id in the subtree of root and returning the last node in the search
+    const Block* Traverse(int id,const Block* root) const;//const version
+
 
   public:
     Tree();
