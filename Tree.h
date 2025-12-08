@@ -23,12 +23,15 @@ class Tree{
   public:
   Tree() this.root = null{}
   ~Tree();
-  Block* Find(int id);
-  void Add(int data);
-  void Remove(int id);
+  int Find(int id);
+  virtual void Add(int data);
+  virtual Remove(int id);
+
+  //for debug only
   string GetInOrder();
   string GetPreOrder();
 
-  private:
+  protected:
   void DeleteBlock(Block* curr) noexcept;
+  static Block* CreateBlock(int data);
 };

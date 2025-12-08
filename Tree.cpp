@@ -1,3 +1,4 @@
+#include<stdexept>
 using Tree.h;
 
 Block* Tree::Block::GetRight(){
@@ -35,4 +36,53 @@ void Tree::DeleteBlock(Block* curr){
   if(curr->GetRight != null)
     deleteBlock(curr->GetRight());
   ~curr;
+}
+
+int Tree::Find(int id){
+  Block* curr = this->root
+  while(true){
+    if(curr == null)
+      throw(std::invalidargument('no such id in tree'));
+    if(curr->GetData() > id){
+      curr = curr->GetLeft();
+      continue;
+    }
+    if(curr->GetData() < id){
+      curr = curr->GetLeft();
+      continue;
+    }
+    return curr->GetData();
+  }
+}
+
+void Tree::Add(int data){
+  if(this->root == null){
+    this->root = CreateBlock(data);
+    return;
+  }
+  Block* curr = root;
+  while(true){
+    if(curr->GetData() == data)
+     throw(std::invalidargument('id already exists'));
+    if(curr->GetData() > data){
+      if(curr->GetLeft() == null){
+        curr->SetLeft(CreateBlock(data));
+        return;
+      }
+      else{
+        curr = curr->GetLeft();
+        continue;
+      }
+    }
+    else{
+      if(curr->GetRight() == null){
+        curr->SetRight(CreateBlock(data));
+        return;
+      }
+      else{
+        curr = curr.GetRight();
+        continue;
+      }
+    }
+  }
 }
