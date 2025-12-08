@@ -1,4 +1,5 @@
 #include <stdexcept>
+#include <iostream>
 #include "Tree.h"
 
 Tree::Block::~Block() { //Do Not Delete A Block Unless Both Children Point To Null
@@ -6,6 +7,11 @@ Tree::Block::~Block() { //Do Not Delete A Block Unless Both Children Point To Nu
     delete right;
     delete left;
 }
+
+Tree::Block *Tree::CreateBlock(const int data) {
+  return new Block(data);
+}
+
 
 
 Tree::Block* Tree::Block::GetRight() const {
@@ -36,6 +42,8 @@ Tree::~Tree(){
   if(this->root == nullptr) return;
   DeleteBlock(this->root);
 }
+
+
 
 void Tree::DeleteBlock(const Block* curr){
   // if(curr->GetLeft() != nullptr)
@@ -159,4 +167,40 @@ void Tree::Add(const int data){
   //     }
   //   }
   // }
+}
+
+void Tree::Remove(int id) {
+  Block* found = Traverse(id, root);
+  if(found->GetData() == id) {
+    DeleteBlock(found);
+    return;
+  }
+  throw(std::invalid_argument("no such id in tree"));
+}
+
+
+void Tree::PrintInOrder(const Block* root) const {
+    if(root == nullptr)
+      return;
+    if(root->GetLeft() != nullptr) {
+      return PrintInOrder(root->GetLeft());
+    }
+    else {
+      std::cout << root->GetData() << std::endl;
+      PrintInOrder(root->GetRight());
+    }
+}
+
+
+void Tree::PrintPreOrder(const Block* root) {
+    if(root == nullptr)
+      return;
+    std::cout << root->GetData() << std::endl;
+    if(root->GetLeft() != nullptr) {
+      return PrintPreOrder(root->GetLeft());
+    }
+    else {
+      PrintPreOrder(root->GetRight());
+    }
+
 }

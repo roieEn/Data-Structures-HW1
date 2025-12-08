@@ -30,9 +30,9 @@ class Tree{
     virtual void Remove(int id);
 
     //for debug only
-    std::string GetInOrder();
+    void PrintInOrder(const Block* root) const;
 
-    std::string GetPreOrder();
+    void PrintPreOrder(const Block* root);
 
   protected:
     static void DeleteBlock(const Block* curr);
