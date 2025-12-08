@@ -31,5 +31,4 @@ class Tree{
 
   private:
   void DeleteBlock(Block* curr) noexcept;
-  void DeleteAllBlocks() noexcept;
 };

@@ -26,10 +26,6 @@ bool Tree::Block::operator >(Block* comp){
 
 Tree::~Tree(){
   if(this->root == null) return;
-  DeleteAllBlocks();
-}
-
-void Tree::DeleteAllBlocks(){
   DeleteBlock(this->root);
 }
 
