@@ -28,4 +28,8 @@ class Tree{
   void Remove(int id);
   string GetInOrder();
   string GetPreOrder();
+
+  private:
+  void DeleteBlock(Block* curr) noexcept;
+  void DeleteAllBlocks() noexcept;
 };

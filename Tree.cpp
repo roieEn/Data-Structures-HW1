@@ -23,3 +23,20 @@ int Tree::Block::GetData(){
 bool Tree::Block::operator >(Block* comp){
   return this->Data > comp.GetData();
 }
+
+Tree::~Tree(){
+  if(this->root == null) return;
+  DeleteAllBlocks();
+}
+
+void Tree::DeleteAllBlocks(){
+  DeleteBlock(this->root);
+}
+
+void Tree::DeleteBlock(Block* curr){
+  if(curr->GetLeft != null)
+    deleteBlock(curr->GetLeft());
+  if(curr->GetRight != null)
+    deleteBlock(curr->GetRight());
+  ~curr;
+}
