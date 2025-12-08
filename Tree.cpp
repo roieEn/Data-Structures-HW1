@@ -1,60 +1,25 @@
-template<class T>;
-class Tree<T>{
-  protected:
-  class Block<T>{
-    Block* right;
-    Block* left;
-    T* data;
-    public:
-    Block(T* data)this.right = null, this.left = null, this.data = data{}
-    ~Block(){ //Do Not Delete A Block Unless Both Children Point To Null
-      delete this.data;
-    }
-    Block* GetRight();
-    void SetRight(Block*);
-    Block* GetLeft();
-    void SetLeft(Block*);
-    T* GetData();
-    bool operator >(Block* comp);
-  };
-  Block* root;
+using Tree.h;
 
-  public:
-  Tree() this.root = null{}
-  ~Tree();
-  Find(int id);
-  Add(T* data);
-  Remove(int id);
-};
+Block* Tree::Block::GetRight(){
+  return this->right;
+}
 
-template<class T>
-Tree<T>::Add(T* data){
-  Block* newBlock = new Block(T);
-  if(root == null){
-    root = newBlock;
-    return;
-  }
-  Block* curr = root;
-  while(true){
-    if(newBlock > curr){
-      if(curr->GetRight == null)
-      curr->SetRight(newBlock);
-      return;
-    }
-    else{
-      curr = curr->GetRight();
-      continue;
-    }
-    if(curr > newBlock){
-      if(curr->GetLeft == null){
-        curr->SetLeft(newBlock);
-        return;
-      }
-      else{
-        curr = curr->GetLeft();
-        continue;
-      }
-    }
-    throw(1);
-  }
+Block* Tree::Block::GetLeft(){
+  return this->GetLeft;
+}
+
+void Tree::Block::SetRight(Block* right){
+  this->right = right;
+}
+
+void Tree::Block::SetLeft(Block* left){
+  this->left = left;
+}
+
+int Tree::Block::GetData(){
+  return this->data;
+}
+
+bool Tree::Block::operator >(Block* comp){
+  return this->Data > comp.GetData();
 }
