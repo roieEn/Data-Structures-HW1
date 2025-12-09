@@ -3,7 +3,10 @@ class Stack{
     Block* next;
     int data;
     public:
-    Block(): next(nullptr), data(0){}
+    Block(int data): next(nullptr), data(data){}
+    Block* GetNext();
+    void SetNext(Block* next);
+    int GetData();
   };
   Block* head;
   int size;
@@ -12,4 +15,5 @@ class Stack{
   ~Stack();
   void Push(int data);
   int Pop();
+  bool IsEmpty();
 };
