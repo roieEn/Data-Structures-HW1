@@ -1,5 +1,6 @@
 #include <iostream>
 #include "Tree.h"
+#include "Stack.h"
 
 int main() {
     Tree oak = Tree();
@@ -34,6 +35,11 @@ int main() {
 
     oak.PrintInOrder(oak.GetRoot());
     std::cout << "test 7" << std::endl;
+
+    Stack stack = Stack();
+    stack.Push(5);
+    stack.Push(3);
+    std::cout << stack.Pop() << " " << stack.Pop() << std::endl;
 
 
 }
