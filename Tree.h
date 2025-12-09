@@ -25,6 +25,7 @@ class Tree{
   public:
     Tree() : root(nullptr) {}
     virtual ~Tree();
+    const Block* GetRoot() const;
     int Find(int id) const;
     virtual void Add(int data);
     virtual void Remove(int id);
@@ -32,7 +33,7 @@ class Tree{
     //for debug only
     void PrintInOrder(const Block* root) const;
 
-    void PrintPreOrder(const Block* root);
+    void PrintPreOrder(const Block* root) const;
 
   protected:
     static void DeleteBlock(const Block* curr);

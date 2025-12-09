@@ -128,13 +128,22 @@ int Tree::Find(const int id) const {
 
 void Tree::Add(const int data){
   Block* found = Traverse(data); //supposed to be the parent of the new block
-  if(found->GetRight() != nullptr || found->GetRight() != nullptr) { //found is a parent of a real block, so one of his son is data
-    throw(std::invalid_argument("id already exists"));
+  std::cout  << "adding "<< data << std::endl;
+  if(found == nullptr) { //empty tree
+    this->root = CreateBlock(data);
+    return;
   }
+  std::cout << "Traversed, found data is" << found->GetData() << std::endl;
   if(data < found->GetData()) {//need to add it as a left son because it is smaller
+    if(found->GetLeft() != nullptr) {
+      throw(std::invalid_argument("id already exists"));
+    }
     found->SetLeft(CreateBlock(data));
   }
   if(data > found->GetData()) {//need to add it as a right son because it is bigger
+    if(found->GetRight() != nullptr) {
+      throw(std::invalid_argument("id already exists"));
+    }
     found->SetRight(CreateBlock(data));
   }
 }
@@ -153,30 +162,29 @@ void Tree::Remove(const int id) {
 }
 
 
+const Tree::Block *Tree::GetRoot() const {
+  return root;
+}
 
 
 void Tree::PrintInOrder(const Block* root) const {
     if(root == nullptr)
       return;
     if(root->GetLeft() != nullptr) {
-      return PrintInOrder(root->GetLeft());
+      PrintInOrder(root->GetLeft());
     }
-    else {
-      std::cout << root->GetData() << std::endl;
-      PrintInOrder(root->GetRight());
-    }
+    std::cout << root->GetData() << std::endl;
+    PrintInOrder(root->GetRight());
 }
 
 
-void Tree::PrintPreOrder(const Block* root) {
+void Tree::PrintPreOrder(const Block* root) const {
     if(root == nullptr)
       return;
     std::cout << root->GetData() << std::endl;
     if(root->GetLeft() != nullptr) {
-      return PrintPreOrder(root->GetLeft());
+      PrintPreOrder(root->GetLeft());
     }
-    else {
       PrintPreOrder(root->GetRight());
-    }
 
 }
