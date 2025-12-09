@@ -3,7 +3,7 @@ class Stack{
     Block* next;
     int data;
     public:
-    Block(int data): next(nullptr), data(data){}
+    explicit Block(int data): next(nullptr), data(data){}
     Block* GetNext();
     void SetNext(Block* next);
     int GetData();

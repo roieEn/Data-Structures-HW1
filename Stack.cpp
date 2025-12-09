@@ -1,7 +1,7 @@
-using Stack
+#include "Stack.h"
 
-Block* Stack::Block::GetNext(){
-  return this->GetNext();
+Stack::Block* Stack::Block::GetNext(){
+  return this->next;
 }
 
 void Stack::Block::SetNext(Block* next){
