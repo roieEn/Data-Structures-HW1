@@ -18,12 +18,12 @@ class Tree{
           bool operator >(const Block* comp) const;
     };
     Block* root;
-    Block* Traverse(int id, Block* root);//searching for id in the subtree of root and returning the last node in the search
-    const Block* Traverse(int id,const Block* root) const;//const version
+    Block* Traverse(int id);//searching for id in the subtree of root and returning the parent of the last node in the search
+    const Block* Traverse(int id) const;//const version
 
 
   public:
-    Tree();
+    Tree() : root(nullptr) {}
     virtual ~Tree();
     int Find(int id) const;
     virtual void Add(int data);

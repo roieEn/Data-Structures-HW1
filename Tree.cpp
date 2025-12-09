@@ -54,86 +54,81 @@ void Tree::DeleteBlock(const Block* curr){
   delete curr;
 }
 
-Tree::Block* Tree::Traverse(const int id, Block *root) {
+Tree::Block* Tree::Traverse(const int id) {
   Block* curr = root;
+  Block* parent = root;
   if(curr == nullptr)//empty tree
     return root;
   while(true){
     if(curr->GetData() == id) {//found id
-      return curr;
+      return parent;
     }
     if(curr->GetData() > id){
       if(curr->GetLeft() != nullptr) {
+        parent = curr;
         curr = curr->GetLeft();
         continue;
       }
-      return curr; //id should be to the left of curr but curr doesn't have a left son
+      return curr; //id should be to the left of curr but curr doesn't have a left son so curr is the supposed parent
     }
-    else{
       if(curr->GetRight() != nullptr) {
+        parent = curr;
         curr = curr->GetRight();
         continue;
       }
-      return curr; //id should be to the right of curr but curr doesn't have a right son
-    }
+      return curr; //id should be to the right of curr but curr doesn't have a right son so curr is the supposed parent
   }
 }
 
-const Tree::Block* Tree::Traverse(const int id,const Block *root) const {
-  const Block *curr = root;
+const Tree::Block* Tree::Traverse(const int id) const {
+  const Block* curr = root;
+  const Block* parent = root;
   if(curr == nullptr)//empty tree
     return root;
   while(true){
-    if(curr->GetData() == id) {
-      return curr;
+    if(curr->GetData() == id) {//found id
+      return parent;
     }
     if(curr->GetData() > id){
       if(curr->GetLeft() != nullptr) {
+        parent = curr;
         curr = curr->GetLeft();
         continue;
       }
-      return curr; //id should be to the left of curr but curr doesn't have a left son
+      return curr; //id should be to the left of curr but curr doesn't have a left son so curr is the supposed parent
     }
-    else{
       if(curr->GetRight() != nullptr) {
+        parent = curr;
         curr = curr->GetRight();
         continue;
       }
-      return curr; //id should be to the right of curr but curr doesn't have a right son
-    }
+      return curr; //id should be to the right of curr but curr doesn't have a right son so curr is the supposed parent
   }
 }
 
-
 int Tree::Find(const int id) const {
-  const Block* found = Traverse(id, this->root);
-  if(found->GetData() == id) { //found it
-    return found->GetData();
+  const Block* found = Traverse(id);
+  if(id < found->GetData()) {
+    if(id == found->GetLeft()->GetData()) {
+      return found->GetLeft()->GetData();
+    }
+    throw(std::invalid_argument("no such id in tree")); //found the closest node
   }
-  throw(std::invalid_argument("no such id in tree")); //found the closest node
-  // const Block* curr = this->root;
-  // while(true){
-  //   if(curr == nullptr)
-  //     throw(std::invalid_argument("no such id in tree"));
-  //   if(curr->GetData() > id){
-  //     curr = curr->GetLeft();
-  //     continue;
-  //   }
-  //   if(curr->GetData() < id){
-  //     curr = curr->GetLeft();
-  //     continue;
-  //   }
-  //   return curr->GetData();
-  // }
+  if(id > found->GetData()) {
+    if(id == found->GetRight()->GetData()) {
+      return found->GetRight()->GetData();
+    }
+     throw(std::invalid_argument("no such id in tree")); //found the closest node
+  }
+  if(id == found->GetData()) {
+    throw std::runtime_error("traverse returned id, error");//not supposed to happen.
+  }
+  throw std::runtime_error("couldn't compare id to found->GetData()");
 }
 
 void Tree::Add(const int data){
-  if(this->root == nullptr){
-    this->root = CreateBlock(data);
-    return;
-  }
-  Block* found = Traverse(data, this->root);
-  if(found->GetData() == data) { //found the data block
+  Block* found = Traverse(data); //supposed to be the parent of the new block
+  if(found->GetRight() != nullptr || found->GetRight() != nullptr) { //found is a parent of a real block, so one of his son is data
     throw(std::invalid_argument("id already exists"));
   }
   if(data < found->GetData()) {//need to add it as a left son because it is smaller
@@ -142,41 +137,22 @@ void Tree::Add(const int data){
   if(data > found->GetData()) {//need to add it as a right son because it is bigger
     found->SetRight(CreateBlock(data));
   }
-
-  // while(true){
-  //   if(curr->GetData() == data)
-  //    throw(std::invalid_argument("id already exists"));
-  //   if(curr->GetData() > data){
-  //     if(curr->GetLeft() == nullptr){
-  //       curr->SetLeft(CreateBlock(data));
-  //       return;
-  //     }
-  //     else{
-  //       curr = curr->GetLeft();
-  //       continue;
-  //     }
-  //   }
-  //   else{
-  //     if(curr->GetRight() == nullptr){
-  //       curr->SetRight(CreateBlock(data));
-  //       return;
-  //     }
-  //     else{
-  //       curr = curr->GetRight();
-  //       continue;
-  //     }
-  //   }
-  // }
 }
 
-void Tree::Remove(int id) {
-  Block* found = Traverse(id, root);
-  if(found->GetData() == id) {
+void Tree::Remove(const int id) {
+  const Block* found = Traverse(id);
+  if(found->GetRight()->GetData() == id) {
+    DeleteBlock(found);
+    return;
+  }
+  if(found->GetLeft()->GetData() == id) {
     DeleteBlock(found);
     return;
   }
   throw(std::invalid_argument("no such id in tree"));
 }
+
+
 
 
 void Tree::PrintInOrder(const Block* root) const {
