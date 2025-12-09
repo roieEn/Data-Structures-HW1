@@ -1,3 +1,4 @@
+#pragma once
 class Stack{
   class Block{
     Block* next;
