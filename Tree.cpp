@@ -3,9 +3,9 @@
 #include "Tree.h"
 
 Tree::Block::~Block() { //Do Not Delete A Block Unless Both Children Point To Null
-    // this->left = nullptr; this->right = nullptr;
-    delete right;
-    delete left;
+    this->left = nullptr;
+    this->right = nullptr;
+
 }
 
 Tree::Block *Tree::CreateBlock(const int data) {
@@ -46,11 +46,11 @@ Tree::~Tree(){
 
 
 void Tree::DeleteBlock(const Block* curr){
-  // if(curr->GetLeft() != nullptr)
-  //   DeleteBlock(curr->GetLeft());
-  // if(curr->GetRight != nullptr)
-  //   DeleteBlock(curr->GetRight());
-  // ~curr;
+  std::cout << "removing " << curr->GetData() << std::endl;
+  if(curr->GetLeft() != nullptr)
+    DeleteBlock(curr->GetLeft());
+  if(curr->GetRight() != nullptr)
+    DeleteBlock(curr->GetRight());
   delete curr;
 }
 
@@ -149,13 +149,24 @@ void Tree::Add(const int data){
 }
 
 void Tree::Remove(const int id) {
-  const Block* found = Traverse(id);
-  if(found->GetRight()->GetData() == id) {
-    DeleteBlock(found);
+  Block* found = Traverse(id);
+  std::cout << found->GetData() << std::endl;
+  if(found->GetRight() != nullptr && found->GetRight()->GetData() == id) {
+    std::cout << "removing right" << std::endl;
+    DeleteBlock(found->GetRight());
+    found->SetRight(nullptr);
     return;
   }
-  if(found->GetLeft()->GetData() == id) {
+  if(found->GetLeft() != nullptr && found->GetLeft()->GetData() == id) {
+    std::cout << "removing left" << std::endl;
+    DeleteBlock(found->GetLeft());
+    found->SetLeft(nullptr);
+    return;
+  }
+  std::cout << "not a son" << std::endl;
+  if(found->GetData() == id) { //deleting the root
     DeleteBlock(found);
+    this->root = nullptr;
     return;
   }
   throw(std::invalid_argument("no such id in tree"));
