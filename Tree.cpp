@@ -46,7 +46,6 @@ Tree::~Tree(){
 
 
 void Tree::DeleteBlock(const Block* curr){
-  std::cout << "removing " << curr->GetData() << std::endl;
   if(curr->GetLeft() != nullptr)
     DeleteBlock(curr->GetLeft());
   if(curr->GetRight() != nullptr)
@@ -128,12 +127,10 @@ int Tree::Find(const int id) const {
 
 void Tree::Add(const int data){
   Block* found = Traverse(data); //supposed to be the parent of the new block
-  std::cout  << "adding "<< data << std::endl;
   if(found == nullptr) { //empty tree
     this->root = CreateBlock(data);
     return;
   }
-  std::cout << "Traversed, found data is" << found->GetData() << std::endl;
   if(data < found->GetData()) {//need to add it as a left son because it is smaller
     if(found->GetLeft() != nullptr) {
       throw(std::invalid_argument("id already exists"));
@@ -150,20 +147,16 @@ void Tree::Add(const int data){
 
 void Tree::Remove(const int id) {
   Block* found = Traverse(id);
-  std::cout << found->GetData() << std::endl;
   if(found->GetRight() != nullptr && found->GetRight()->GetData() == id) {
-    std::cout << "removing right" << std::endl;
     DeleteBlock(found->GetRight());
     found->SetRight(nullptr);
     return;
   }
   if(found->GetLeft() != nullptr && found->GetLeft()->GetData() == id) {
-    std::cout << "removing left" << std::endl;
     DeleteBlock(found->GetLeft());
     found->SetLeft(nullptr);
     return;
   }
-  std::cout << "not a son" << std::endl;
   if(found->GetData() == id) { //deleting the root
     DeleteBlock(found);
     this->root = nullptr;
