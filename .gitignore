@@ -51,3 +51,9 @@ run_tests.py
 run_tests.py:Zone.Identifier
 wet1util.h
 wet1util.h:Zone.Identifier
+.vscode/
+CMakeLists.txt
+build/
+main.cpp
+my_program
+.idea/
