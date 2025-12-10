@@ -57,3 +57,4 @@ build/
 main.cpp
 my_program
 .idea/
+Tests/
