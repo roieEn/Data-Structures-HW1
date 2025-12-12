@@ -17,6 +17,7 @@ class Tree{
 
   public:
     Tree() : root(nullptr) {}
+    Tree(const Tree& other);
     virtual ~Tree();
     T& Find(const T& t) const;
     virtual void Add(const T& data);
@@ -34,6 +35,7 @@ class Tree{
 
   protected:
   //helper functions
+    Block* CopySubTree(const Block* otherRoot) const;
     static void DeleteSubTree(const Block* curr) noexcept;
     void Add(const T& data, Block* root);
     void Remove(const T& t, Block*& root);
@@ -50,6 +52,14 @@ bool Tree<T>::Block::operator >(const Block* comp) const{
 }
 
 //Tree methods
+template<typename T>
+Tree<T>::Tree(const Tree& other) : root(nullptr) {
+  if(other.root == nullptr) return;
+  //preorder traversal copy
+  this->root = CreateBlock(other.root->data);
+  this->root->left = CopySubTree(other.root->left);
+  this->root->right = CopySubTree(other.root->right);
+}
 
 template<typename T>
 Tree<T>::~Tree(){
@@ -111,6 +121,15 @@ void Tree<T>::PrintPreOrder(const Block* root) const {
 }
 
 //helper functions
+template<typename T>
+typename Tree<T>::Block* Tree<T>::CopySubTree(const Block* other) const{
+  if(other == nullptr)
+    return nullptr;
+  Block* newRoot = CreateBlock(other->data);
+  newRoot->left = CopySubTree(other->left);
+  newRoot->right = CopySubTree(other->right);
+  return newRoot;
+}
 
 template<typename T>
 void Tree<T>::DeleteSubTree(const Block* curr) noexcept{
