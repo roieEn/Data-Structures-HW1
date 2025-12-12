@@ -1,4 +1,3 @@
-#pragma once
 template<typename T>
 class Stack{
   class Block{
@@ -15,6 +14,7 @@ class Stack{
   int size;
   public:
   Stack(): head(nullptr), size(0){}
+  Stack(const Stack& other);
   ~Stack();
   void Push(const T& data);
   T Pop();
@@ -47,6 +47,16 @@ T Stack<T>::Block::GetData () const{
   return *(this->data);
 }
 
+template<typename T>
+Stack<T>::Stack(const Stack& other){
+  this->head = new Block(other.head->GetData());
+  Block* curr = this->head;
+  Block* otherCurr = other.head->GetNext();
+  while(otherCurr != nullptr){
+    curr->SetNext(new Block(otherCurr->GetData()));
+    curr = curr->GetNext();
+  }
+}
 
 template<typename T>
 Stack<T>::~Stack(){
