@@ -3,12 +3,12 @@
 #include "AvlTree.h"
 #include "wet1util.h"
 #include "Pair.h"
-
+#include <memory>
 
 class Course {
     int courseId;
     int coursePoints;
-    AvlTree<Pair<int,Student>> studentsTree; //when Block will be its own file will be Block<Pair<int,Student>>
+    AvlTree<Pair<int,std::shared_ptr<Student>>> studentsTree; //when Block will be its own file will be Block<Pair<int,Student>>
 public:
     Course(const int id, const int points) : courseId(id), coursePoints(points) {}
     StatusType removeStudent(int id);
