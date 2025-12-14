@@ -6,7 +6,8 @@ StatusType TechSystem::addStudent(const int studentId) {
         return StatusType::INVALID_INPUT;
     }
     try {
-        this->studentsTree.Add(studentId);
+        const std::shared_ptr<Student> student = std::make_unique<Student>(studentId, -1 * this->currentBonus);
+        this->studentsTree.Add(student);
     }
     catch (const std::invalid_argument& e) {
         return StatusType::FAILURE; //id is already in courseId
@@ -28,7 +29,7 @@ StatusType TechSystem::removeStudent(int studentId) {
         this->studentsTree.Remove(studentId);
     }
     catch (const std::invalid_argument& e) {
-        return StatusType::FAILURE; //id is already in courseId
+        return StatusType::FAILURE; //id is not in students tree
     }
     catch (const std::bad_alloc& e) {
         return StatusType::ALLOCATION_ERROR;
@@ -63,7 +64,27 @@ StatusType TechSystem::removeCourse(const int courseId) {
         return StatusType::INVALID_INPUT;
     }
     try {
-        this->coursesTree.Remove(courseId);
+        this->coursesTree.Remove(courseId); //need to check if course has students
+    }
+    catch (const std::invalid_argument& e) {
+        return StatusType::FAILURE; //id is not in courseId
+    }
+    catch (const std::bad_alloc& e) {
+        return StatusType::ALLOCATION_ERROR;
+    }
+    catch (...) {
+        return StatusType::FAILURE;
+    }
+    return StatusType::SUCCESS;
+}
+
+
+StatusType TechSystem::enrollStudent(const int studentId, const int courseId) {
+    if(courseId <= 0 || studentId <= 0) {
+        return StatusType::INVALID_INPUT;
+    }
+    try {
+        this->coursesTree.Find(courseId).Add(studentId);
     }
     catch (const std::invalid_argument& e) {
         return StatusType::FAILURE; //id is already in courseId
@@ -77,21 +98,57 @@ StatusType TechSystem::removeCourse(const int courseId) {
     return StatusType::SUCCESS;
 }
 
-
-StatusType TechSystem::enrollStudent(int studentId, int courseId) {
-
-}
-
-StatusType TechSystem::completeCourse(int studentId, int courseId) {
-
+StatusType TechSystem::completeCourse(const int studentId, const int courseId) {
+    if(courseId <= 0 || studentId <= 0) {
+        return StatusType::INVALID_INPUT;
+    }
+    try {
+        Course* course = coursesTree.Find(courseId);
+        Student* studentToRemove = course.Remove(studentId);
+        studentToRemove->m_points += course->getCoursePoint();
+    }
+    catch (const std::invalid_argument& e) {
+        return StatusType::FAILURE; //id is not in courseId
+    }
+    catch (const std::bad_alloc& e) {
+        return StatusType::ALLOCATION_ERROR;
+    }
+    catch (...) {
+        return StatusType::FAILURE;
+    }
+    return StatusType::SUCCESS;
 }
 
 StatusType TechSystem::awardAcademicPoints(int points) {
-
+    if(points <= 0) {
+        return StatusType::INVALID_INPUT;
+    }
+    try {
+        this->currentBonus += points;
+    }
+    catch (std::bad_alloc& e) {
+        return StatusType::ALLOCATION_ERROR;
+    }
+    return StatusType::SUCCESS;
 }
 
 output_t<int> TechSystem::getStudentPoints(int studentId) {
-
+    if(studentId <= 0) {
+        return StatusType::INVALID_INPUT;
+    }
+    try {
+        return this->studentsTree.Find(studentId)->m_points;
+    }
+    catch (const std::invalid_argument& e) {
+        return StatusType::FAILURE; //id is not is tree
+    }
+    catch (const std::bad_alloc& e) {
+        return StatusType::ALLOCATION_ERROR;
+    }
+    catch (...) {
+        return StatusType::FAILURE;
+    }
+    return StatusType::SUCCESS;
 }
 
 

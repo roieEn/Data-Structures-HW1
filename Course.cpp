@@ -33,3 +33,8 @@ StatusType Course::removeStudent(int id) {
     }
     return StatusType::SUCCESS;
 }
+
+int Course::getCoursePoint() const {
+    return this->coursePoints;
+}
+
