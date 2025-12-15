@@ -18,7 +18,7 @@ class AvlTree : public Tree<T, AvlBlock<T>>{
     void Update(Stack<AvlBlock<T>*>& path);
     void Reconnect(AvlBlock<T>* block, Stack<AvlBlock<T>*>& path);
     void Remove(AvlBlock<T>*& toRem, Stack<AvlBlock<T>*>& path);
-    AvlBlock<T>*& GetMin(AvlBlock<T>* toRem, Stack<AvlBlock<T>*>& path)
+    AvlBlock<T>*& GetMin(AvlBlock<T>* toRem, Stack<AvlBlock<T>*>& path);
 };
 
 //public funcs implementation:
@@ -214,6 +214,8 @@ void AvlTree<T>::Remove(AvlBlock<T>*& toRem, Stack<AvlBlock<T>*>& path){
     Stack<AvlBlock<T>*> top;
     AvlBlock<T>*& minRightSubtree = GetMin(toRem, top);
     AvlBlock<T>* substitute = minRightSubtree;
+    path.Push(substitute);
+    Stack<AvlBlock<T>*>::Merge(path, top);
 
     //2: substitution
     {
@@ -250,8 +252,7 @@ void AvlTree<T>::Reconnect(AvlBlock<T>* block, Stack<AvlBlock<T>*> &path){
         this->root = block;
         return;
     }
-    AvlBlock<T>* temp = path.Pop();
-    path.Push(temp);
+    AvlBlock<T>* temp = path.Peek();
     if(block->data < temp->data){
         temp->left = block;
     }
@@ -261,7 +262,7 @@ void AvlTree<T>::Reconnect(AvlBlock<T>* block, Stack<AvlBlock<T>*> &path){
 }
 
 template<typename T>
-typename AvlBlock<T>*& AvlTree<T>::GetMin(AvlBlock<T>* toRem, Stack<AvlBlock<T>*>& path){
+AvlBlock<T>*& AvlTree<T>::GetMin(AvlBlock<T>* toRem, Stack<AvlBlock<T>*>& path){
     if(toRem->right->left == nullptr) return toRem->right;
     AvlBlock<T>* curr = toRem ->right;
     while(curr->left->left !=nullptr) { 
