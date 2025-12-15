@@ -4,13 +4,13 @@ template<typename T>
 class Stack{
   class Block{
     Block* next;
-    T* data;
+    T data;
     public:
-    explicit Block(const T& data);
+    explicit Block(const T& data) : next(nullptr), data(data){}
     ~Block();
     Block* GetNext() const; 
     void SetNext(Block* next);
-    T GetData() const;
+    T& GetData() const;
   };
   Block* head;
   Block* tail;
@@ -21,17 +21,13 @@ class Stack{
   ~Stack();
   void Push(const T& data);
   T Pop();
+  T& Peek();
   bool IsEmpty() const;
   
   static void Merge(Stack& Bot, Stack& Top);
 };
 
 //Block funcs
-template<typename T>
-Stack<T>::Block::Block(const T& data){
-  this->data = new T(data);
-  this->next = nullptr;
-}
 
 template<typename T>
 typename Stack<T>::Block* Stack<T>::Block::GetNext() const{
@@ -49,8 +45,8 @@ void Stack<T>::Block::SetNext(Block* next){
 }
 
 template<typename T>
-T Stack<T>::Block::GetData () const{
-  return *(this->data);
+T& Stack<T>::Block::GetData () const{
+  return this->data;
 }
 
 //Stack funcs
@@ -76,7 +72,7 @@ void Stack<T>::Push(const T& data){
 
 template<typename T>
 T Stack<T>::Pop(){
-  T data = this->head->GetData();
+  T& data = this->head->GetData();
   Block* temp = this->head;
   this->head = this->head->GetNext();
   if(this->head == nullptr) this->tail = nullptr;
@@ -92,16 +88,21 @@ bool Stack<T>::IsEmpty() const{
 
 template<typename T>
 void Stack<T>::Merge(Stack<T>& Bot, Stack<T>& Top){
-    if (Bot.head == nullptr) {
-        Bot.head = Top.head;
-        Bot.tail = Top.tail;
-        Top.head = nullptr;
-        Top.tail = nullptr;
-        return;
-    }
-    if (Top.head == nullptr) return;
+  if (Bot.head == nullptr) {
+      Bot.head = Top.head;
+      Bot.tail = Top.tail;
+      Top.head = nullptr;
+      Top.tail = nullptr;
+      return;
+  }
+  if (Top.head == nullptr) return;
     Top.tail->SetNext(Bot.head); 
     Bot.head = Top.head;
     Top.head = nullptr;
     Top.tail = nullptr;
-  }
+}
+
+template<typename T>
+T& Stack<T>::Peek(){
+  return this->head.GetData();
+}
