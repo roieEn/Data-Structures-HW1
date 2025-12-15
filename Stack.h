@@ -7,10 +7,10 @@ class Stack{
     T data;
     public:
     explicit Block(const T& data) : next(nullptr), data(data){}
-    ~Block();
+    ~Block() = default;
     Block* GetNext() const; 
     void SetNext(Block* next);
-    T& GetData() const;
+    T& GetData();
   };
   Block* head;
   Block* tail;
@@ -24,6 +24,7 @@ class Stack{
   T& Peek();
   bool IsEmpty() const;
   
+  //Puts top on top on bot and empties top
   static void Merge(Stack& Bot, Stack& Top);
 };
 
@@ -35,17 +36,12 @@ typename Stack<T>::Block* Stack<T>::Block::GetNext() const{
 }
 
 template<typename T>
-Stack<T>::Block::~Block(){
-  delete data;
-}
-
-template<typename T>
 void Stack<T>::Block::SetNext(Block* next){
   this->next = next;
 }
 
 template<typename T>
-T& Stack<T>::Block::GetData () const{
+T& Stack<T>::Block::GetData (){
   return this->data;
 }
 
@@ -72,7 +68,7 @@ void Stack<T>::Push(const T& data){
 
 template<typename T>
 T Stack<T>::Pop(){
-  T& data = this->head->GetData();
+  T data = this->head->GetData();
   Block* temp = this->head;
   this->head = this->head->GetNext();
   if(this->head == nullptr) this->tail = nullptr;
@@ -104,5 +100,5 @@ void Stack<T>::Merge(Stack<T>& Bot, Stack<T>& Top){
 
 template<typename T>
 T& Stack<T>::Peek(){
-  return this->head.GetData();
+  return this->head->GetData();
 }
