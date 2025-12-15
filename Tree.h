@@ -11,7 +11,7 @@ class Tree{
     Tree() : root(nullptr) {}
     Tree(const Tree& other);
     virtual ~Tree();
-    T& Find(const T& t) const;
+    T& Find(const T& t);
     virtual void Add(const T& data);
     virtual void Remove(const T& t);
 
@@ -53,7 +53,7 @@ Tree<T,Block>::~Tree(){
 }
 
 template<typename T, typename Block>
-T& Tree<T, Block>::Find(const T& t) const {
+T& Tree<T, Block>::Find(const T& t){
   Block* found = GetBlock(t);
   if(found == nullptr) {
     throw(std::invalid_argument("t not found"));
