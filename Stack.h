@@ -1,3 +1,5 @@
+#include <iostream>
+
 template<typename T>
 class Stack{
   class Block{
@@ -11,16 +13,20 @@ class Stack{
     T GetData() const;
   };
   Block* head;
+  Block* tail;
   int size;
   public:
-  Stack(): head(nullptr), size(0){}
-  Stack(const Stack& other);
+  Stack() : head(nullptr), tail(nullptr), size(0){}
+  Stack(const Stack& other) = delete;
   ~Stack();
   void Push(const T& data);
   T Pop();
   bool IsEmpty() const;
+  
+  static void Merge(Stack& Bot, Stack& Top);
 };
 
+//Block funcs
 template<typename T>
 Stack<T>::Block::Block(const T& data){
   this->data = new T(data);
@@ -47,16 +53,8 @@ T Stack<T>::Block::GetData () const{
   return *(this->data);
 }
 
-template<typename T>
-Stack<T>::Stack(const Stack& other){
-  this->head = new Block(other.head->GetData());
-  Block* curr = this->head;
-  Block* otherCurr = other.head->GetNext();
-  while(otherCurr != nullptr){
-    curr->SetNext(new Block(otherCurr->GetData()));
-    curr = curr->GetNext();
-  }
-}
+//Stack funcs
+
 
 template<typename T>
 Stack<T>::~Stack(){
@@ -71,6 +69,7 @@ template<typename T>
 void Stack<T>::Push(const T& data){
   Block* head = new Block(data);
   head->SetNext(this->head);
+  if(this->head == nullptr) this->tail = head;
   this->head = head;
   this->size++;
 }
@@ -80,6 +79,7 @@ T Stack<T>::Pop(){
   T data = this->head->GetData();
   Block* temp = this->head;
   this->head = this->head->GetNext();
+  if(this->head == nullptr) this->tail = nullptr;
   delete temp;
   this->size--;
   return data;
@@ -87,5 +87,21 @@ T Stack<T>::Pop(){
 
 template<typename T>
 bool Stack<T>::IsEmpty() const{
-  return this->size == 0;
+  return this->head == nullptr;
 }
+
+template<typename T>
+void Stack<T>::Merge(Stack<T>& Bot, Stack<T>& Top){
+    if (Bot.head == nullptr) {
+        Bot.head = Top.head;
+        Bot.tail = Top.tail;
+        Top.head = nullptr;
+        Top.tail = nullptr;
+        return;
+    }
+    if (Top.head == nullptr) return;
+    Top.tail->SetNext(Bot.head); 
+    Bot.head = Top.head;
+    Top.head = nullptr;
+    Top.tail = nullptr;
+  }
