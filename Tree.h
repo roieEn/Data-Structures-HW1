@@ -1,5 +1,4 @@
 #include<stdexcept>
-#include<iostream>
 #include "Block.h"
 
 template<typename T, typename Block = BaseBlock<T>>
@@ -14,16 +13,6 @@ class Tree{
     T& Find(const T& t);
     virtual void Add(const T& data);
     virtual void Remove(const T& t);
-
-
-    //for debug only
-  private:
-    void PrintInOrder(const Block* root) const;
-    void PrintPreOrder(const Block* root) const;
-  public:
-    void PrintInOrder() const;
-    void PrintPreOrder() const;
-
 
   protected:
   //helper functions
@@ -73,36 +62,6 @@ void Tree<T, Block>::Add(const T& data){
 template<typename T, typename Block>
 void Tree<T, Block>::Remove(const T& t) {
   Remove(t, this->root);
-}
-
-//for debug only
-template<typename T, typename Block>
-void Tree<T, Block>::PrintInOrder() const {
-    PrintInOrder(this->root);
-}
-
-template<typename T, typename Block>
-void Tree<T, Block>::PrintPreOrder() const {
-    PrintPreOrder(this->root);
-}
-
-template<typename T, typename Block>
-void Tree<T, Block>::PrintInOrder(const Block* root) const {
-    if(root == nullptr)
-      return;
-    PrintInOrder(root->left);
-    std::cout << root->data << " ";
-    PrintInOrder(root->right);
-}
-
-template<typename T, typename Block>
-void Tree<T, Block>::PrintPreOrder(const Block* root) const {
-    if(root == nullptr)
-      return;
-    std::cout << root->data << " ";
-    PrintPreOrder(root->left);
-    PrintPreOrder(root->right);
-
 }
 
 //helper functions
