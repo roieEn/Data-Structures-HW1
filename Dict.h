@@ -5,7 +5,7 @@
 
 template <typename T>
 class Dict{
-  AvlTree<Pair<const int, std::shared_ptr<T>> tree;
+  AvlTree<Pair<const int, std::shared_ptr<T>>> tree;
 
   public:
   Dict() = default;
@@ -31,12 +31,13 @@ class Dict{
 
 template<typename T>
 void Dict<T>::Add(const int id, T& data){
-  Pair<const int, std::shared_ptr<T>> temp = Pair<const int, sts::shared_ptr<T>>(id, std::make_shared<T>(new T(data)));
+  std::shared_ptr<T> shared(new T(data));
+  Pair<const int, std::shared_ptr<T>> temp = Pair<const int, std::shared_ptr<T>>(id, shared);
   try{
     tree.Add(temp);
   }
   catch(const std::invalid_argument& e){
-    delete temp.second;
+    shared.reset();
     throw e;
   }
 }
@@ -64,7 +65,7 @@ void Dict<T>::Remove(const int id){
 }
 
 template<typename T>
-const shared_ptr<T>& Dict::GetShared(const int id) const{
+const std::shared_ptr<T>& Dict<T>::GetShared(const int id) const{
   Pair<const int, std::shared_ptr<T>> temp = MakeDummy(id);
   try{
     return tree.Find(temp).second;
@@ -77,11 +78,11 @@ const shared_ptr<T>& Dict::GetShared(const int id) const{
 //helper funcs:
 
 template<typename T>
-typename Pair<const int, shared_ptr<T>> Dict::MakeDummy(const int id) const{
+Pair<const int, std::shared_ptr<T>> Dict<T>::MakeDummy(const int id) const{
   std::shared_ptr<T> nullShared = nullptr;
-  return Pair<const int, shared_ptr<T>>(id, nullShared);
+  return Pair<const int, std::shared_ptr<T>>(id, nullShared);
 }
 
 //for debug only
 template<typename T>
-void Dict::PrintInOrder(){tree.PrintInOrder();}
+void Dict<T>::PrintInOrder(){tree.PrintInOrder();}
