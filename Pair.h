@@ -11,7 +11,7 @@ struct Pair {
     bool operator<(const Pair& other) const {return this->first < other.first;}
     bool operator>(const Pair& other) const {return this->first > other.first;}
     bool operator==(const Pair& other) const {return this->first == other.first;}
-    friend std::ostream& operator<<(std::ostream& out, const Pair& pair) const{
+    friend std::ostream& operator<<(std::ostream& out, const Pair& pair){
         out << "(" << pair.first << "," << pair.second << ")";
         return out; 
     }
