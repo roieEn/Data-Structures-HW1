@@ -1,5 +1,7 @@
 #include <memory>
 #include <exception>
+#include "AvlTree.h"
+#include "Pair.h"
 
 template <typename T>
 class Dict{
@@ -18,6 +20,11 @@ class Dict{
 
   private:
   Pair MakeDummy(const int id) const;
+
+  //for debug only:
+
+  public:
+  void PrintInOrder();
 }
 
 //puclic funcs:
@@ -74,3 +81,7 @@ typename Pair<const int, shared_ptr<T>> Dict::MakeDummy(const int id) const{
   std::shared_ptr<T> nullShared = nullptr;
   return Pair<const int, shared_ptr<T>>(id, nullShared);
 }
+
+//for debug only
+template<typename T>
+void Dict::PrintInOrder(){tree.PrintInOrder();}
