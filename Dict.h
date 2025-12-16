@@ -20,11 +20,6 @@ class Dict{
 
   private:
   Pair<const int, std::shared_ptr<T>> MakeDummy(const int id) const;
-
-  //for debug only:
-
-  public:
-  void PrintInOrder();
 };
 
 //puclic funcs:
@@ -82,7 +77,3 @@ Pair<const int, std::shared_ptr<T>> Dict<T>::MakeDummy(const int id) const{
   std::shared_ptr<T> nullShared = nullptr;
   return Pair<const int, std::shared_ptr<T>>(id, nullShared);
 }
-
-//for debug only
-template<typename T>
-void Dict<T>::PrintInOrder(){tree.PrintInOrder();}
