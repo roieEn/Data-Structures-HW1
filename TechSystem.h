@@ -6,8 +6,8 @@
 #include "wet1util.h"
 
 class TechSystem {
-    AvlTree<std::shared_ptr<Student>> studentsTree;
-    AvlTree<std::unique_ptr<Course>> coursesTree;
+    AvlTree<Pair<int, std::shared_ptr<Student>>> studentsTree;
+    AvlTree<Pair<int, std::unique_ptr<Course>>> coursesTree;
     int currentBonus = 0;
 
 public:

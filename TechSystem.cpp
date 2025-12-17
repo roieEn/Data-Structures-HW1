@@ -103,7 +103,7 @@ StatusType TechSystem::completeCourse(const int studentId, const int courseId) {
         return StatusType::INVALID_INPUT;
     }
     try {
-        Course* course = coursesTree.Find(courseId);
+        Pair<int,std::shared_ptr<Course>> course = coursesTree.Find(courseId);
         Student* studentToRemove = course.Remove(studentId);
         studentToRemove->m_points += course->getCoursePoint();
     }
