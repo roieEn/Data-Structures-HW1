@@ -14,5 +14,6 @@ public:
     void AddStudent(int id, std::shared_ptr<Student> student);
     std::shared_ptr<Student> GetStudent(int id);
     int getCoursePoint() const;
+    bool HasStudents() const;
     ~Course() = default; //should use the correct destructor of Dict
 };

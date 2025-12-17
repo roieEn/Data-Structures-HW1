@@ -21,26 +21,26 @@ struct AvlBlock{
   AvlBlock* right;
   AvlBlock* left;
   T data;
-  int hight;
-  explicit AvlBlock(const T& data) : right(nullptr), left(nullptr), data(data), hight(0) {}
-  void UpdateHight();
+  int height;
+  explicit AvlBlock(const T& data) : right(nullptr), left(nullptr), data(data), height(0) {}
+  void UpdateHeight();
   int BF() const;
   bool operator <(const AvlBlock* comp) const;
 };
 
 //AvlBlock methods
 template<typename T>
-void AvlBlock<T>::UpdateHight(){
-  int leftHight = this->left == nullptr ? -1 : left->hight;
-  int rightHight = this->right == nullptr ? -1 : right->hight;
-  this->hight = 1 + (leftHight > rightHight ? leftHight : rightHight);
+void AvlBlock<T>::UpdateHeight(){
+  int leftHeight = this->left == nullptr ? -1 : left->height;
+  int rightHeight = this->right == nullptr ? -1 : right->height;
+  this->height = 1 + (leftHeight > rightHeight ? leftHeight : rightHeight);
 }
 
 template<typename T>
 int AvlBlock<T>::BF() const{
-  int leftHight = this->left == nullptr ? -1 : static_cast<AvlBlock<T>*>(this->left)->hight;
-  int rightHight = this->right == nullptr ? -1 : static_cast<AvlBlock<T>*>(this->right)->hight;
-  return leftHight - rightHight;
+  int leftHeight = this->left == nullptr ? -1 : static_cast<AvlBlock<T>*>(this->left)->height;
+  int rightHeight = this->right == nullptr ? -1 : static_cast<AvlBlock<T>*>(this->right)->height;
+  return leftHeight - rightHeight;
 }
 
 template<typename T>

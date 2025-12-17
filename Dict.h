@@ -14,16 +14,17 @@ class Dict{
   Dict(Dict& other) = delete;
   Dict& operator=(const Dict& other) = delete;
 
-  void Add(const int id, T& data);
-  T& Get(const int id);
-  void Remove(const int id);
-  const std::shared_ptr<T>& GetShared(const int id) const;
+  void Add(int id, T& data);
+  T& Get(int id);
+  void Remove(int id);
+  const std::shared_ptr<T>& GetShared(int id) const;
+  bool IsEmpty() const;
 
   private:
-  Pair<const int, std::shared_ptr<T>> MakeDummy(const int id) const;
+  Pair<const int, std::shared_ptr<T>> MakeDummy(int id) const;
 };
 
-//puclic funcs:
+//public funcs:
 
 template<typename T>
 void Dict<T>::Add(const int id, T& data){
@@ -70,6 +71,12 @@ const std::shared_ptr<T>& Dict<T>::GetShared(const int id) const{
     throw e;
   }
 }
+
+template<typename T>
+bool Dict<T>::IsEmpty() const{
+  return tree.IsEmpty();
+}
+
 
 //helper funcs:
 

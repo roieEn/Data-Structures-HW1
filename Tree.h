@@ -14,6 +14,7 @@ class Tree{
     T& Find(const T& t);
     virtual void Add(const T& data);
     virtual void Remove(const T& t);
+    virtual bool IsEmpty() const;
 
   protected:
   //helper functions
@@ -137,14 +138,14 @@ void Tree<T, Block>::Remove(const T& t, Block*& root){
     }
     //2 children
     else{
-      //get all needen pointers
+      //get all needed pointers
       Block*& minRightSubtree = GetMin(root->right);
       Block* minPtr = minRightSubtree;
       Block* temp = root;
-      //subsitution
+      //substitution
       minRightSubtree = minRightSubtree->right;
       /*
-      note that the edge case of minRigtSubTree being root->right is a non-issue
+      note that the edge case of minRightSubTree being root->right is a non-issue
       because minRightSubtree = minRightSubtree->right; means root->right = root->right->right;
       */
       minPtr->right = root->right;
@@ -169,7 +170,7 @@ Block* Tree<T, Block>::GetBlock(const T& t) const{
       return nullptr;
     if(t < curr->data)
       curr = curr->left;
-    if(curr->data < t)
+    else if(curr->data < t)
       curr = curr->right;
     return curr;
   }
@@ -181,4 +182,9 @@ Block*& Tree<T, Block>::GetMin(Block*& curr) const{
     return curr;
   }
   return GetMin(curr->left);
+}
+
+template<typename T, typename Block>
+bool Tree<T, Block>::IsEmpty() const {
+  return root == nullptr;
 }

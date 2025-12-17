@@ -7,15 +7,15 @@ class AvlTree : public Tree<T, AvlBlock<T>>{
     public:
     AvlTree() : Tree<T, AvlBlock<T>>(){}
     void Add(const T& data) override;
-    void Remove(const T& id);
+    void Remove(const T& id) override;
 
     private:
     AvlBlock<T>* Lroll(AvlBlock<T>* parent);
     AvlBlock<T>* Rroll(AvlBlock<T>* parent);
-    AvlBlock<T>* LLroll(AvlBlock<T>*& parant, AvlBlock<T>* child);
-    AvlBlock<T>* LRroll(AvlBlock<T>*& parant, AvlBlock<T>* child);
-    AvlBlock<T>* RLroll(AvlBlock<T>*& parant, AvlBlock<T>* child);
-    AvlBlock<T>* RRroll(AvlBlock<T>*& parant, AvlBlock<T>* child);
+    AvlBlock<T>* LLroll(AvlBlock<T>*& parent, AvlBlock<T>* child);
+    AvlBlock<T>* LRroll(AvlBlock<T>*& parent, AvlBlock<T>* child);
+    AvlBlock<T>* RLroll(AvlBlock<T>*& parent, AvlBlock<T>* child);
+    AvlBlock<T>* RRroll(AvlBlock<T>*& parent, AvlBlock<T>* child);
     void Update(Stack<AvlBlock<T>*>& path);
     void Reconnect(AvlBlock<T>* block, Stack<AvlBlock<T>*>& path);
     void Remove(AvlBlock<T>*& toRem, Stack<AvlBlock<T>*>& path);
@@ -57,7 +57,7 @@ void AvlTree<T>::Add(const T& data) {
         throw(std::invalid_argument("id already exists"));
     }
 
-    //update block hights and insure structure integrity
+    //update block heights and insure structure integrity
     Update(path);
 }
 
@@ -85,7 +85,7 @@ void AvlTree<T>::Remove(const T& id){
         if(id < curr->data){
             path.Push(curr);
 
-            //if toRem is curr's left chiled
+            //if toRem is curr's left child
             if(curr->left != nullptr && curr->left->data == id){
                 Remove(curr->left, path);
                 break;
@@ -119,82 +119,82 @@ void AvlTree<T>::Remove(const T& id){
 //private funcs implementation:
 
 template<typename T>
-AvlBlock<T>* AvlTree<T>::Lroll(AvlBlock<T>* parant){
-    if(parant->left->BF() != -1){
-        return LLroll(parant, parant->left);
+AvlBlock<T>* AvlTree<T>::Lroll(AvlBlock<T>* parent){
+    if(parent->left->BF() != -1){
+        return LLroll(parent, parent->left);
     }
     else{
-        return LRroll(parant, parant->left);
+        return LRroll(parent, parent->left);
     }
 }
 
 template<typename T>
-AvlBlock<T>* AvlTree<T>::Rroll(AvlBlock<T>* parant){
-    if(parant->right->BF() != 1){
-        return RRroll(parant, parant->right);
+AvlBlock<T>* AvlTree<T>::Rroll(AvlBlock<T>* parent){
+    if(parent->right->BF() != 1){
+        return RRroll(parent, parent->right);
     }
     else{
-        return RLroll(parant, parant->right);
+        return RLroll(parent, parent->right);
     }
 }
 
 template<typename T>
-AvlBlock<T>* AvlTree<T>::LLroll(AvlBlock<T>*& parant, AvlBlock<T>*child){
-    AvlBlock<T>* temp = parant;
-    parant = child;
+AvlBlock<T>* AvlTree<T>::LLroll(AvlBlock<T>*& parent, AvlBlock<T>*child){
+    AvlBlock<T>* temp = parent;
+    parent = child;
     temp->left = child->right;
     child->right = temp;
-    temp->UpdateHight();
-    child->UpdateHight();
-    return parant;
+    temp->UpdateHeight();
+    child->UpdateHeight();
+    return parent;
 }
 
 template<typename T>
-AvlBlock<T>* AvlTree<T>::LRroll(AvlBlock<T>*& parant, AvlBlock<T>* child){
+AvlBlock<T>* AvlTree<T>::LRroll(AvlBlock<T>*& parent, AvlBlock<T>* child){
     AvlBlock<T>* grandChild = child->right;
-    AvlBlock<T>* temp = parant;
-    parant = grandChild;
+    AvlBlock<T>* temp = parent;
+    parent = grandChild;
     temp->left = grandChild->right;
     child->right = grandChild->left;
     grandChild->right = temp;
     grandChild->left = child;
-    temp->UpdateHight();
-    child->UpdateHight();
-    grandChild->UpdateHight();
-    return parant;
+    temp->UpdateHeight();
+    child->UpdateHeight();
+    grandChild->UpdateHeight();
+    return parent;
 }
 
 template<typename T>
-AvlBlock<T>* AvlTree<T>::RLroll(AvlBlock<T>*& parant, AvlBlock<T>* child){
+AvlBlock<T>* AvlTree<T>::RLroll(AvlBlock<T>*& parent, AvlBlock<T>* child){
     AvlBlock<T>* grandChild = child->left;
-    AvlBlock<T>* temp = parant;
-    parant = grandChild;
+    AvlBlock<T>* temp = parent;
+    parent = grandChild;
     temp->right = grandChild->left;
     child->left = grandChild->right;
     grandChild->left = temp;
     grandChild->right = child;
-    temp->UpdateHight();
-    child->UpdateHight();
-    grandChild->UpdateHight();
-    return parant;
+    temp->UpdateHeight();
+    child->UpdateHeight();
+    grandChild->UpdateHeight();
+    return parent;
 }
 
 template<typename T>
-AvlBlock<T>* AvlTree<T>::RRroll(AvlBlock<T>*& parant, AvlBlock<T>* child){
-    AvlBlock<T>* temp = parant;
-    parant = child;
+AvlBlock<T>* AvlTree<T>::RRroll(AvlBlock<T>*& parent, AvlBlock<T>* child){
+    AvlBlock<T>* temp = parent;
+    parent = child;
     temp->right = child->left;
     child->left = temp;
-    temp->UpdateHight();
-    child->UpdateHight();
-    return parant;
+    temp->UpdateHeight();
+    child->UpdateHeight();
+    return parent;
 }
 
 template<typename T>
 void AvlTree<T>::Remove(AvlBlock<T>*& toRem, Stack<AvlBlock<T>*>& path){
-    //if toRem has one or less children
+    //if toRem has one or fewer children
     if(toRem->left == nullptr){
-        AvlBlock<T>* temp = toRem;
+        const AvlBlock<T>* temp = toRem;
         toRem = toRem->right;
         //note that toRem is Block*& so the actual pointer in the parent will be changed
         delete temp;
@@ -232,7 +232,7 @@ template<typename T>
 void AvlTree<T>::Update(Stack<AvlBlock<T>*>& path){
     while(!path.IsEmpty()){
         AvlBlock<T>* curr = path.Pop();
-        curr->UpdateHight();
+        curr->UpdateHeight();
         int BF = curr->BF();
         if(BF == 2){
             AvlBlock<T>* newRoot = Lroll(curr);

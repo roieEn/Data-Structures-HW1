@@ -17,3 +17,7 @@ int Course::getCoursePoint() const {
     return this->coursePoints;
 }
 
+bool Course::HasStudents() const {
+    return students.IsEmpty();
+}
+

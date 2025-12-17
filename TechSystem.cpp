@@ -1,6 +1,5 @@
 #include "TechSystem.h"
 
-
 StatusType TechSystem::addStudent(const int studentId) {
     if(studentId <= 0) {
         return StatusType::INVALID_INPUT;
@@ -26,6 +25,10 @@ StatusType TechSystem::removeStudent(const int studentId) {
         return StatusType::INVALID_INPUT;
     }
     try {
+        const std::shared_ptr<Student> student = students.Get(studentId);
+        if(student.use_count() > 2) {
+            return StatusType::FAILURE; //student is enrolled to a course
+        }
         this->students.Remove(studentId);
     }
     catch (const std::invalid_argument& e) {
@@ -65,7 +68,10 @@ StatusType TechSystem::removeCourse(const int courseId) {
         return StatusType::INVALID_INPUT;
     }
     try {
-        this->courses.Remove(courseId); //need to check if course has students
+        if(courses.Get(courseId)->HasStudents() == false) {
+            return StatusType::FAILURE;
+        }
+        this->courses.Remove(courseId);
     }
     catch (const std::invalid_argument& e) {
         return StatusType::FAILURE; //id is not in coursesTree
@@ -105,7 +111,7 @@ StatusType TechSystem::completeCourse(const int studentId, const int courseId) {
         return StatusType::INVALID_INPUT;
     }
     try {
-        const std::shared_ptr<Course>& course = courses.Get(courseId);
+        const std::shared_ptr<Course> course = courses.Get(courseId);
         const std::shared_ptr<Student> student = course->GetStudent(studentId);
         course->RemoveStudent(studentId);
         student->m_points += course->getCoursePoint();
