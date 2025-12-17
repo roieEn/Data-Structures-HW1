@@ -1,38 +1,17 @@
 #include "Course.h"
 
-StatusType Course::addStudent(int id) {
-    static_assert(id > 0);
-    try {
-        this->studentsTree.Add(id);
-    }
-    catch (const std::invalid_argument& e) {
-        return StatusType::FAILURE; //id is already in courseId
-    }
-    catch (const std::bad_alloc& e) {
-        return StatusType::ALLOCATION_ERROR;
-    }
-    catch (...) {
-        return StatusType::FAILURE;
-    }
-    return StatusType::SUCCESS;
+void Course::AddStudent(const int id, std::shared_ptr<Student> student) {
+    this->students.Add(id, student);
 }
 
-StatusType Course::removeStudent(int id) {
-    static_assert(id > 0);
-    try {
-        this->studentsTree.Remove(id);
-    }
-    catch (const std::invalid_argument& e) {
-        return StatusType::FAILURE; // no such id in tree
-    }
-    catch (const std::bad_alloc& e) {
-        return StatusType::ALLOCATION_ERROR;
-    }
-    catch (...) {
-        return StatusType::FAILURE;
-    }
-    return StatusType::SUCCESS;
+void Course::RemoveStudent(const int id) {
+    students.Remove(id);
 }
+
+std::shared_ptr<Student> Course::GetStudent(const int id) {
+    return students.Get(id);
+}
+
 
 int Course::getCoursePoint() const {
     return this->coursePoints;

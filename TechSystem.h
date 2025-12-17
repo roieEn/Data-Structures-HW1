@@ -1,13 +1,12 @@
 #pragma once
 #include "Course.h"
 #include "Student.h"
-#include "AvlTree.h"
-#include "Pair.h"
+#include "Dict.h"
 #include "wet1util.h"
 
 class TechSystem {
-    AvlTree<Pair<int, std::shared_ptr<Student>>> studentsTree;
-    AvlTree<Pair<int, std::unique_ptr<Course>>> coursesTree;
+    Dict<std::shared_ptr<Student>> students;
+    Dict<std::shared_ptr<Course>> courses;
     int currentBonus = 0;
 
 public:

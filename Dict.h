@@ -1,3 +1,4 @@
+#pragma once
 #include <memory>
 #include <exception>
 #include "AvlTree.h"
@@ -41,7 +42,7 @@ template<typename T>
 T& Dict<T>::Get(const int id){
   Pair<const int, std::shared_ptr<T>> temp = MakeDummy(id);
   try{
-    return tree.Find(temp).second;
+    return *tree.Find(temp).second;
   }
   catch(const std::invalid_argument& e){
     throw e;
