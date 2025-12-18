@@ -1,6 +1,7 @@
 #pragma once
 #include<stdexcept>
 #include "Block.h"
+#include <iostream>
 
 template<typename T, typename Block = BaseBlock<T>>
 class Tree{
@@ -165,15 +166,18 @@ Block* Tree<T, Block>::CreateBlock(const T& data){
 template<typename T, typename Block>
 Block* Tree<T, Block>::GetBlock(const T& t) const{
   Block* curr = root;
-  while(true){
-    if(curr == nullptr)//empty tree
-      return nullptr;
-    if(t < curr->data)
+  while(curr != nullptr){
+    if(t < curr->data) {
       curr = curr->left;
-    else if(curr->data < t)
+      continue;
+    }
+    if(t > curr->data) {
       curr = curr->right;
+      continue;
+    }
     return curr;
   }
+  return nullptr;
 }
 
 template<typename T, typename Block>
