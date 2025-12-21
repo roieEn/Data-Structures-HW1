@@ -1,4 +1,4 @@
-#include "TechSystem.h"
+#include "TechSystem26a1.h"
 
 StatusType TechSystem::addStudent(const int studentId) {
     if(studentId <= 0) {
@@ -44,7 +44,7 @@ StatusType TechSystem::removeStudent(const int studentId) {
 }
 
 StatusType TechSystem::addCourse(const int courseId, const int points) {
-    if(courseId <= 0) {
+    if(courseId <= 0 || points <=0) {
         return StatusType::INVALID_INPUT;
     }
     try {
