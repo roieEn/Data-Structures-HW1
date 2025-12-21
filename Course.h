@@ -1,6 +1,6 @@
 #pragma once
 #include "Student.h"
-#include "dict.h"
+#include "Dict.h"
 #include "wet1util.h"
 #include <memory>
 
